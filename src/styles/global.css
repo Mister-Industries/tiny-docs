@@ -1,0 +1,251 @@
+:root {
+  --bg-color: #0a0e17;
+  --sidebar-bg: #161c2c;
+  --text-color: #eef1f7;
+  --highlight-color: #6bb4ff;
+  --node-color: #ffd76b;
+  --line-color: rgba(255, 215, 107, 0.3);
+  --root-color: #7cbe5f;
+  --robotics-color: #ff6b6b;
+  --sensors-color: #6bffb4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow: hidden;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 280px;
+  background-color: var(--sidebar-bg);
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.logo h1 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nav-section {
+  margin-bottom: 10px;
+}
+
+.nav-section-title {
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.nav-section-title:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-section-content {
+  padding-left: 10px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.nav-section.open .nav-section-content {
+  max-height: 500px;
+}
+
+.nav-link {
+  display: block;
+  padding: 8px 10px;
+  margin: 3px 0;
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--highlight-color);
+}
+
+.nav-link.active {
+  background-color: rgba(107, 180, 255, 0.1);
+  color: var(--highlight-color);
+  border-left: 3px solid var(--highlight-color);
+}
+
+/* Content Area Styles */
+.content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.constellation-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+#constellation-map {
+  width: 100%;
+  height: 100%;
+  cursor: move;
+}
+
+.node {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.node:hover {
+  filter: brightness(1.3);
+}
+
+.node-label {
+  font-size: 12px;
+  pointer-events: none;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+.link {
+  stroke: var(--line-color);
+  stroke-width: 1;
+}
+
+.zoom-controls {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  gap: 5px;
+}
+
+.zoom-controls button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(22, 28, 44, 0.8);
+  color: var(--text-color);
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-controls button:hover {
+  background: rgba(22, 28, 44, 1);
+}
+
+#reset-view {
+  width: auto;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+/* Info Panel */
+.info-panel {
+  background-color: rgba(22, 28, 44, 0.9);
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  max-height: 30%;
+  overflow-y: auto;
+}
+
+.info-panel h2 {
+  margin-bottom: 10px;
+  color: var(--highlight-color);
+}
+
+.info-panel p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+/* Node rectangle styles */
+.node-rect {
+  stroke-width: 1;
+  stroke: rgba(255, 255, 255, 0.6);
+}
+
+.constellation-group {
+  transition: opacity 0.3s ease;
+}
+
+.dim {
+  opacity: 0.3;
+}
+
+/* Constellation background stars */
+.background-star {
+  fill: white;
+  opacity: 0.5;
+}
+
+/* Additional styles for page template */
+.page-nav-button {
+  display: flex;
+  align-items: center;
+  background-color: var(--sidebar-bg);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.page-nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--highlight-color);
+}
+
+.page-nav-text {
+  margin: 0 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

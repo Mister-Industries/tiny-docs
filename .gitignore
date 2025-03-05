@@ -1,0 +1,12 @@
+# Gatsby
+.cache/
+public
+node_modules/
+.env
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+

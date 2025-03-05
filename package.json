@@ -1,0 +1,28 @@
+{
+  "name": "tinycore-esp32-learning-constellation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive constellation-based learning path for ESP32 development",
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "d3": "^7.8.5",
+    "gatsby": "^5.12.4",
+    "gatsby-plugin-react-helmet": "^6.12.0",
+    "gatsby-plugin-sharp": "^5.12.0",
+    "gatsby-plugin-styled-components": "^6.12.0",
+    "gatsby-source-filesystem": "^5.12.0",
+    "gatsby-transformer-remark": "^6.12.0",
+    "gatsby-transformer-sharp": "^5.12.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "styled-components": "^6.1.1"
+  }
+}
+
