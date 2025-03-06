@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { graphql, Link } from 'gatsby';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
@@ -151,29 +151,125 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const PageTemplate = ({ data }) => {
+// Helper functions for progress tracking
+const markPageVisited = (section, subpage) => {
+  if (typeof window === 'undefined') return;
+  
+  // Get the visited pages from local storage
+  const visitedString = localStorage.getItem('visitedPages');
+  const visited = visitedString ? JSON.parse(visitedString) : {};
+  
+  // Initialize section if it doesn't exist
+  if (!visited[section]) {
+    visited[section] = [];
+  }
+  
+  // Add subpage if not already marked
+  if (!visited[section].includes(subpage)) {
+    visited[section].push(subpage);
+    localStorage.setItem('visitedPages', JSON.stringify(visited));
+  }
+};
+
+const PageTemplate = ({ data, pageContext }) => {
   const { markdownRemark } = data;
   const { frontmatter, html } = markdownRemark;
+  
+  // Extract section and subpage from page context or URL
+  let section, subpage;
+  
+  if (pageContext.slug) {
+    const parts = pageContext.slug.split('/');
+    section = parts[0];
+    subpage = parts[1] || 'index';
+  }
+  
+  // Mark this page as visited when it loads
+  useEffect(() => {
+    if (section && subpage) {
+      markPageVisited(section, subpage);
+    }
+  }, [section, subpage]);
   
   // Function to find previous and next pages
   const findPrevNextPages = () => {
     // Import navigation data
     const { navigationStructure } = require('../data/navigationData');
+    const { constellationData } = require('../data/constellationData');
     
-    // Flatten the navigation structure
-    const allPages = [];
-    navigationStructure.forEach(section => {
-      section.items.forEach(item => {
-        allPages.push(item);
-      });
-    });
+    let prevPage = null;
+    let nextPage = null;
     
-    // Find current page index
-    const currentIndex = allPages.findIndex(page => page.id === frontmatter.slug);
+    // Find the current section in navigation
+    const sectionInfo = navigationStructure.find(s => 
+      s.items.some(item => item.id === section)
+    );
     
-    // Get prev and next
-    const prevPage = currentIndex > 0 ? allPages[currentIndex - 1] : null;
-    const nextPage = currentIndex < allPages.length - 1 ? allPages[currentIndex + 1] : null;
+    if (sectionInfo) {
+      // Find current section item
+      const sectionItem = sectionInfo.items.find(item => item.id === section);
+      const sectionIndex = sectionInfo.items.indexOf(sectionItem);
+      
+      // Find the constellation node with subpages
+      let nodeWithSubpages = null;
+      for (const key in constellationData) {
+        const node = constellationData[key].nodes.find(n => n.id === section);
+        if (node && node.subpages) {
+          nodeWithSubpages = node;
+          break;
+        }
+      }
+      
+      if (nodeWithSubpages && nodeWithSubpages.subpages && nodeWithSubpages.subpages.length > 0) {
+        // For subpages within a section
+        const subpages = ['index', ...nodeWithSubpages.subpages.map(p => p.id)];
+        const currentSubpageIndex = subpages.indexOf(subpage);
+        
+        if (currentSubpageIndex > 0) {
+          // Previous is the previous subpage in this section
+          const prevSubpageId = subpages[currentSubpageIndex - 1];
+          const prevSubpage = prevSubpageId === 'index' 
+            ? { id: prevSubpageId, name: "Overview" }
+            : nodeWithSubpages.subpages.find(p => p.id === prevSubpageId);
+          
+          prevPage = {
+            id: `${section}/${prevSubpageId}`,
+            name: prevSubpage.title || prevSubpage.name
+          };
+        } else if (sectionIndex > 0) {
+          // Previous is the last section
+          prevPage = sectionInfo.items[sectionIndex - 1];
+        }
+        
+        if (currentSubpageIndex < subpages.length - 1) {
+          // Next is the next subpage in this section
+          const nextSubpageId = subpages[currentSubpageIndex + 1];
+          const nextSubpage = nextSubpageId === 'index'
+            ? { id: nextSubpageId, name: "Overview" }
+            : nodeWithSubpages.subpages.find(p => p.id === nextSubpageId);
+          
+          nextPage = {
+            id: `${section}/${nextSubpageId}`,
+            name: nextSubpage.title || nextSubpage.name
+          };
+        } else if (sectionIndex < sectionInfo.items.length - 1) {
+          // Next is the next section
+          nextPage = sectionInfo.items[sectionIndex + 1];
+          nextPage.id = `${nextPage.id}/index`;
+        }
+      } else {
+        // For regular section navigation (no subpages)
+        if (sectionIndex > 0) {
+          prevPage = sectionInfo.items[sectionIndex - 1];
+          prevPage.id = `${prevPage.id}/index`;
+        }
+        
+        if (sectionIndex < sectionInfo.items.length - 1) {
+          nextPage = sectionInfo.items[sectionIndex + 1];
+          nextPage.id = `${nextPage.id}/index`;
+        }
+      }
+    }
     
     return { prevPage, nextPage };
   };

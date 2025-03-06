@@ -2,16 +2,100 @@
 export const constellationData = {
   // Main sections
   core: {
-    name: "tinyDocs",
+    name: "TinyCore ESP32",
     color: "#6bb4ff",
     nodes: [
-      { id: "intro", name: "Introduction", x: 0, y: 0, difficulty: 1 },
-      { id: "setup", name: "Getting Started", x: 100, y: -50, difficulty: 1 },
-      { id: "hardware", name: "Hardware Overview", x: 200, y: 0, difficulty: 2 },
-      { id: "programming", name: "Programming Basics", x: 300, y: -50, difficulty: 2 },
-      { id: "wifi", name: "WiFi & Connectivity", x: 400, y: 0, difficulty: 3 },
-      { id: "bt", name: "Bluetooth Features", x: 500, y: -50, difficulty: 3 },
-      { id: "projects", name: "Sample Projects", x: 600, y: 0, difficulty: 3 },
+      { 
+        id: "intro", 
+        name: "Introduction", 
+        x: 0, 
+        y: 0, 
+        difficulty: 1,
+        subpages: [
+          { id: "overview", title: "ESP32 Overview" },
+          { id: "features", title: "Key Features" },
+          { id: "comparison", title: "ESP32 vs Other MCUs" },
+          { id: "ecosystem", title: "TinyCore Ecosystem" }
+        ]
+      },
+      { 
+        id: "setup", 
+        name: "Getting Started", 
+        x: 100, 
+        y: -50, 
+        difficulty: 2,
+        subpages: [
+          { id: "prerequisites", title: "Prerequisites" },
+          { id: "installation", title: "Software Installation" },
+          { id: "first-connection", title: "First Connection" },
+          { id: "troubleshooting", title: "Common Issues" }
+        ]
+      },
+      { 
+        id: "hardware", 
+        name: "Hardware Overview", 
+        x: 200, 
+        y: 0, 
+        difficulty: 3,
+        subpages: [
+          { id: "pinout", title: "Board Pinout" },
+          { id: "peripherals", title: "Built-in Peripherals" },
+          { id: "power", title: "Power Management" },
+          { id: "memory", title: "Memory Architecture" }
+        ]
+      },
+      { 
+        id: "programming", 
+        name: "Programming Basics", 
+        x: 300, 
+        y: -50, 
+        difficulty: 3,
+        subpages: [
+          { id: "arduino", title: "Arduino Framework" },
+          { id: "espidf", title: "ESP-IDF Framework" },
+          { id: "micropython", title: "MicroPython" },
+          { id: "debugging", title: "Debugging Techniques" }
+        ]
+      },
+      { 
+        id: "wifi", 
+        name: "WiFi & Connectivity", 
+        x: 400, 
+        y: 0, 
+        difficulty: 3,
+        subpages: [
+          { id: "wifi-basics", title: "WiFi Basics" },
+          { id: "http-client", title: "HTTP Client" },
+          { id: "web-server", title: "Web Server" },
+          { id: "ota", title: "OTA Updates" }
+        ]
+      },
+      { 
+        id: "bt", 
+        name: "Bluetooth Features", 
+        x: 500, 
+        y: -50, 
+        difficulty: 4,
+        subpages: [
+          { id: "bt-classic", title: "Bluetooth Classic" },
+          { id: "ble", title: "Bluetooth Low Energy" },
+          { id: "pairing", title: "Pairing & Security" },
+          { id: "gatt", title: "GATT Services & Characteristics" }
+        ]
+      },
+      { 
+        id: "projects", 
+        name: "Sample Projects", 
+        x: 600, 
+        y: 0, 
+        difficulty: 2,
+        subpages: [
+          { id: "weather", title: "Weather Station" },
+          { id: "home-automation", title: "Home Automation" },
+          { id: "robot", title: "Line Following Robot" },
+          { id: "datalogger", title: "Data Logger" }
+        ]
+      },
     ],
     links: [
       { source: "intro", target: "setup" },
@@ -28,20 +112,52 @@ export const constellationData = {
     name: "Fundamentals",
     color: "#7cbe5f",
     nodes: [
-      { id: "electricity", name: "Electricity Basics", x: -100, y: 150, difficulty: 1 },
-      { id: "components", name: "Electronic Components", x: 0, y: 200, difficulty: 1 },
-      { id: "circuits", name: "Circuit Theory", x: 100, y: 250, difficulty: 1 },
-      { id: "ohms", name: "Ohm's Law", x: 200, y: 200, difficulty: 1 },
-      { id: "pcb", name: "PCB Design", x: 300, y: 250, difficulty: 2 },
-      { id: "soldering", name: "Soldering Skills", x: 400, y: 200, difficulty: 2 },
+      { 
+        id: "electricity", 
+        name: "Electricity Basics", 
+        x: -100, 
+        y: 150, 
+        difficulty: 1,
+        subpages: [
+          { id: "voltage", title: "Voltage & Current" },
+          { id: "resistance", title: "Resistance & Ohm's Law" },
+          { id: "circuits", title: "Circuit Types" },
+          { id: "safety", title: "Electrical Safety" }
+        ]
+      },
+      { 
+        id: "components", 
+        name: "Electronic Components", 
+        x: 0, 
+        y: 200, 
+        difficulty: 2,
+        subpages: [
+          { id: "passive", title: "Passive Components" },
+          { id: "active", title: "Active Components" },
+          { id: "logic", title: "Logic Components" },
+          { id: "modules", title: "Common Modules" }
+        ]
+      },
+      { 
+        id: "circuits", 
+        name: "Circuit Theory", 
+        x: 100, 
+        y: 250, 
+        difficulty: 3,
+        subpages: [
+          { id: "series", title: "Series Circuits" },
+          { id: "parallel", title: "Parallel Circuits" },
+          { id: "kirchhoff", title: "Kirchhoff's Laws" },
+          { id: "analysis", title: "Circuit Analysis" }
+        ]
+      },
+      // ... other nodes with subpages
     ],
     links: [
       { source: "electricity", target: "components" },
       { source: "components", target: "circuits" },
-      { source: "circuits", target: "ohms" },
-      { source: "ohms", target: "pcb" },
-      { source: "pcb", target: "soldering" },
-      { source: "intro", target: "electricity" },
+      //{ source: "intro", target: "electricity" },
+      // ... other links
     ]
   },
 
@@ -61,7 +177,7 @@ export const constellationData = {
       { source: "servos", target: "pwm" },
       { source: "pwm", target: "kinematics" },
       { source: "kinematics", target: "chassis" },
-      { source: "hardware", target: "motors" },
+      //{ source: "hardware", target: "motors" },
     ]
   },
 
@@ -81,7 +197,7 @@ export const constellationData = {
       { source: "digital", target: "temp" },
       { source: "temp", target: "motion" },
       { source: "motion", target: "light" },
-      { source: "hardware", target: "analog" },
+      //{ source: "hardware", target: "analog" },
     ]
   }
 };
